@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Save Vaccine</title>
+</head>
+
+<body>
+
+	<div class="container">
+	
+		<h3>Vaccine</h3>
+		<div sec:authorize="isAuthenticated()">
+  			User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+			<span th:text="${#authentication.getPrincipal().authorities}"></span> |
+			<a th:href="@{/showStaffPage}">Staff</a>
+			<!-- Add a logout button -->
+			<form action="#" th:action="@{/logout}" method="POST">
+				<input type="submit" value="Logout" class="btn btn-outline-primary btn-sm mt-1" />
+			</form>
+		</div>
+		<hr>
+		
+		<p class="h4 mb-4">Save Vaccine</p>
+	
+		<form action="#" th:action="@{/vaccines/save}"
+						 th:object="${vaccine}" method="POST">
+		
+			<!-- Add hidden form field to handle update -->
+			<input type="hidden" th:field="*{id}" />
+			
+			<input type="text" th:field="*{manufacturer}"
+					class="form-control mb-4 col-4" placeholder="Manufacturer" />
+
+			Min Age:
+			<input type="text" th:field="*{minAge}"
+					class="form-control mb-4 col-4" />
+
+			Storage Temperature:
+			<input type="text" th:field="*{storageTemperature}"
+					class="form-control mb-4 col-4" />
+					
+			In Stock:
+			<input type="text" th:field="*{inStock}"
+					class="form-control mb-4 col-4" />
+
+			<button type="submit" class="btn btn-info col-2">Save</button>
+						
+		</form>
+	</div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Staff</title>
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+	<h3>Appointment Added</h3>
+	<div sec:authorize="!isAuthenticated()">
+		<a th:href="@{/showMyLoginPage}">Login</a>
+	</div>
+	<div sec:authorize="isAuthenticated()">
+ 		User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+		<span th:text="${#authentication.getPrincipal().authorities}"></span> |
+		<a th:href="@{/showStaffPage}">Staff</a>
+		<!-- Add a logout button -->
+		<form action="#" th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" class="btn btn-outline-primary btn-sm mt-1" />
+		</form>
+	</div>
+	<hr>
+	Your request was saved into database.
+	<br>
+	<a th:href="@{/users/showFormForAdd}">Add New Appointment</a>
+	
+	
+</div>
+	
+</body>
+</html>

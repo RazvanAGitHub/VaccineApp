@@ -1,0 +1,45 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Staff</title>
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+	<h3>Staff</h3>
+	<div sec:authorize="isAuthenticated()">
+ 			User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+		<span th:text="${#authentication.getPrincipal().authorities}"></span>
+		<!-- Add a logout button -->
+		<form action="#" th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" class="btn btn-outline-primary btn-sm mt-1" />
+		</form>
+	</div>
+	<hr>
+	
+	<ul>
+		<li><a th:href="@{/users/list}">Appointment List</a></li>
+		<li><a th:href="@{/users/showFormForAdd}">Add Appointment</a></li>
+		<li><a th:href="@{/vaccines/list}">Vaccine List</a></li>
+		<li><a th:href="@{/vaccines/showFormForAdd}">Add Vaccine</a></li>
+	</ul>
+</div>
+	
+</body>
+</html>
+
+
+
+
+
+

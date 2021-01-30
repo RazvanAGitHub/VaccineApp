@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Vaccine List</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<h3>Vaccine List</h3>
+	<div sec:authorize="isAuthenticated()">
+ 		User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+		<span th:text="${#authentication.getPrincipal().authorities}"></span> |
+		<a th:href="@{/showStaffPage}">Staff</a>
+		<!-- Add a logout button -->
+		<form action="#" th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" class="btn btn-outline-primary btn-sm mt-1" />
+		</form>
+	</div>
+	<hr>
+	
+	<!-- Add a button -->
+	<a th:href="@{/vaccines/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+		Add Vaccine
+	</a>
+	
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>Manufacturer</th>
+				<th class="text-center">Min Age</th>
+				<th class="text-center">Storage Temperature</th>
+				<th class="text-center">In Stock</th>
+				<th class="text-center">Allocated</th>
+				<th class="text-center">Available</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="vaccine : ${vaccines}">
+			
+				<td th:text="${vaccine.manufacturer}" />	
+				<td th:text="${vaccine.minAge}" class="text-center" />	
+				<td th:text="${vaccine.storageTemperature}" class="text-center" />	
+				<td th:text="${vaccine.inStock}" class="text-center" />	
+				<td th:text="${vaccine.users.size()}" class="text-center" />	
+				<td th:text="${vaccine.inStock - vaccine.users.size()}" class="text-center" />	
+				
+				<td>
+<!-- 					Add "update" button/link -->
+					<a th:href="@{/vaccines/showFormForUpdate(vaccineId=${vaccine.id})}"
+					   class="btn btn-info btn-sm">
+						Update
+					</a>
+				</td>
+				<td>	
+<!-- 					Add "delete" button/link					 -->
+					<a th:href="@{/vaccines/delete(vaccineId=${vaccine.id})}"
+					   class="btn btn-danger btn-sm"
+					   onclick="if (!(confirm('Are you sure you want to delete this vaccine?'))) return false">
+						Delete
+					</a>
+					
+				</td>
+				
+				
+			</tr>
+		</tbody>		
+	</table>
+	
+</div>
+	
+</body>
+</html>
+
+
+

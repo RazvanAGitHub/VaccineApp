@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Appointment</title>
+</head>
+
+<body>
+
+	<div class="container mt-3">
+	
+		<h3>Appointment</h3>
+		<div sec:authorize="!isAuthenticated()">
+			<a th:href="@{/showMyLoginPage}">Login</a>
+		</div>
+		<div sec:authorize="isAuthenticated()">
+  			User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+			<span th:text="${#authentication.getPrincipal().authorities}"></span> |
+			<a th:href="@{/showStaffPage}">Staff</a>
+			<!-- Add a logout button -->
+			<form action="#" th:action="@{/logout}" method="POST">
+				<input type="submit" value="Logout" class="btn btn-outline-primary btn-sm mt-1" />
+			</form>
+		</div>
+		<hr>
+		
+		<p class="h4 mb-3">Add Appointment</p>
+		<p><small class="text-muted">For vaccination appointments please fill out this form.</small></p>
+	
+		<form action="#" th:action="@{/users/save}"
+						 th:object="${user}" method="POST">
+		
+			<!-- Add hidden form field to handle update -->
+			<input type="hidden" th:field="*{id}" />
+			
+			<input type="text" th:field="*{name}"
+					class="form-control mb-4 col-4" placeholder="Name">
+
+			<input type="text" th:field="*{cnp}"
+					class="form-control mb-4 col-4" placeholder="CNP">
+
+			<input type="text" th:field="*{address}"
+					class="form-control mb-4 col-4" placeholder="Address">
+
+			<input type="text" th:field="*{email}"
+					class="form-control mb-4 col-4" placeholder="Email">
+					
+			<input type="text" th:field="*{phone}"
+					class="form-control mb-4 col-4" placeholder="Phone">
+			
+			<select th:field="*{priority}" class="form-control mb-4 col-4">
+			    <option th:value="1" th:text="Doctor"></option>
+			    <option th:value="2" th:text="Teatcher"></option>
+			    <option th:value="3" th:text="Retired"></option>
+			    <option th:value="4" th:text="Other"></option>
+			</select>
+			
+			<select th:field="*{vaccine.id}" class="form-control mb-4 col-4">
+			    <option th:each="v : ${vaccines}" 
+			    	th:value="${v.id}"
+			    	th:text="|${v.manufacturer} - ${v.inStock - v.users.size()} available|"
+			    	th:if="${v.inStock - v.users.size() > 0}" />
+			</select>
+			
+			<button type="submit" class="btn btn-info col-2">Save</button>
+						
+		</form>
+	
+	</div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

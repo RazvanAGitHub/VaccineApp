@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Appointments</title>
+</head>
+
+<body>
+
+<div class="container-fluid mt-3 mb-5">
+
+	<h3>Appointment List</h3>
+	
+	<div sec:authorize="isAuthenticated()">
+ 		User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+		<span th:text="${#authentication.getPrincipal().authorities}"></span> |
+		<a th:href="@{/showStaffPage}">Staff</a>
+		<!-- Add a logout button -->
+		<form action="#" th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" class="btn btn-outline-primary btn-sm mt-1" />
+		</form>
+	</div>
+	
+	<hr>
+	<div class="row">
+		<div class="col">
+			<a th:href="@{/users/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+				Add Appointment
+			</a>
+		</div>
+	</div>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th rowspan=2 class="align-middle">Name</th>
+				<th rowspan=2 class="align-middle">CNP</th>
+				<th rowspan=2 class="align-middle">Address</th>
+				<th rowspan=2 class="align-middle">Email</th>
+				<th rowspan=2 class="align-middle">Phone</th>
+				<th rowspan=2 class="align-middle">Priority</th>
+				<th rowspan=2 class="align-middle">Vaccine</th>
+				<th colspan=2 class="text-center">Registration</th>
+				<th rowspan=2 class="align-middle text-center">Appointment</th>
+				<th rowspan=2></th>
+				<th rowspan=2></th>
+
+			</tr>
+			<tr>
+				<th class="text-center">Date</th>
+				<th class="text-center">Time</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="user : ${users}">
+			
+				<td th:text="${user.name}" />	
+				<td th:text="${user.cnp}" />	
+				<td th:text="${user.address}" />	
+				<td th:text="${user.email}" />	
+				<td th:text="${user.phone}" />	
+				<td th:text="${user.priority}" align="center" />	
+				<td th:text="${user.vaccine.manufacturer}" />	
+				<td th:text="${#temporals.format(user.registration, 'dd-MMM-yyyy')}" />	
+				<td th:text="${#temporals.format(user.registration, 'hh:mm:ss')}" />	
+<!-- 				<td th:text="${#dates.format(user.registration, 'dd-MMM-yyyy')}" />	 -->
+<!-- 				<td th:text="${#temporals.format(user.registration, 'dd-MMM-yyyy')}" />	 -->
+				
+				<td th:text="${#temporals.format(user.appointment, 'dd-MMM-yyyy')}" />
+				<td>
+<!-- 					Add "update" button/link -->
+					<a th:href="@{/users/showFormForUpdate(userId=${user.id})}"
+					   class="btn btn-info btn-sm">
+						Update
+					</a>
+				</td>
+				<td>	
+<!-- 					Add "delete" button/link					 -->
+					<a th:href="@{/users/delete(userId=${user.id})}"
+					   class="btn btn-danger btn-sm"
+					   onclick="if (!(confirm('Are you sure you want to delete this user?'))) return false">
+						Delete
+					</a>
+				</td>
+			</tr>
+		</tbody>		
+	</table>
+	
+	<a th:href="@{/users/setAppointmentDate}" class="btn btn-primary btn-sm">
+		Set Appointment Date
+	</a>
+	<a th:href="@{/users/clearAppointmentDate}" class="btn btn-outline-primary btn-sm">
+		Clear Appointment Date
+	</a>
+</div>
+	
+</body>
+</html>
+
+
+
