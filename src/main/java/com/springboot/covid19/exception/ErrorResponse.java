@@ -1,4 +1,4 @@
-package com.springboot.covid19.rest;
+package com.springboot.covid19.exception;
 
 import lombok.Data;
 

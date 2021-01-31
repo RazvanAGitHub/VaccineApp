@@ -1,4 +1,4 @@
-package com.springboot.covid19.rest;
+package com.springboot.covid19.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

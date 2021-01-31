@@ -55,14 +55,14 @@
 					
 			<input type="text" th:field="*{phone}"
 					class="form-control mb-4 col-4" placeholder="Phone">
-			
-			<select th:field="*{priority}" class="form-control mb-4 col-4">
-			    <option th:value="1" th:text="Doctor"></option>
-			    <option th:value="2" th:text="Teatcher"></option>
-			    <option th:value="3" th:text="Retired"></option>
-			    <option th:value="4" th:text="Other"></option>
+
+			<select th:field="*{profession}"
+				   class="form-control mb-4 col-4" >
+				<option th:value="Doctor" th:text="Doctor"></option>
+				<option th:value="Teacher" th:text="Teacher"></option>
+				<option th:value="Other" th:text="Other"></option>
 			</select>
-			
+
 			<select th:field="*{vaccine.id}" class="form-control mb-4 col-4">
 			    <option th:each="v : ${vaccines}" 
 			    	th:value="${v.id}"

@@ -41,6 +41,7 @@ CREATE TABLE public."user" (
   address varchar(100) DEFAULT NULL,
   email varchar(45) DEFAULT NULL,
   phone varchar(20) DEFAULT NULL,
+  profession varchar(100) DEFAULT NULL,
   priority integer DEFAULT NULL,
   registration timestamp DEFAULT NULL,
   vaccine_id int DEFAULT NULL REFERENCES vaccine (id),

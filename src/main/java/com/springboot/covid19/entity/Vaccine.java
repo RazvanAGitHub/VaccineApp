@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 
@@ -36,7 +37,8 @@ public class Vaccine {
 	
 	@Column(name="in_stock")
 	private int inStock;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy="vaccine")
 	private List<User> users;
 	

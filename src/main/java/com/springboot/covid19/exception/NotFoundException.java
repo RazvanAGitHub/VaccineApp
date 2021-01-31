@@ -1,4 +1,4 @@
-package com.springboot.covid19.rest;
+package com.springboot.covid19.exception;
 
 public class NotFoundException extends RuntimeException {
 

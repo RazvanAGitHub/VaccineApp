@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 
@@ -41,13 +42,17 @@ public class User {
 	
 	@Column(name="phone")
 	private String phone;
+
+	@Column(name = "profession")
+	private String profession;
 	
 	@Column(name="priority")
 	private int priority;
 	
 	@Column(name="registration")
 	private LocalDateTime registration;
-	
+
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="vaccine_id")
 	private Vaccine vaccine;

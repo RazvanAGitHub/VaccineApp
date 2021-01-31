@@ -1,20 +1,25 @@
-package com.springboot.covid19.service;
+package com.springboot.covid19.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.springboot.covid19.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springboot.covid19.dto.VaccineRepository;
+import com.springboot.covid19.repository.VaccineRepository;
 import com.springboot.covid19.entity.Vaccine;
-import com.springboot.covid19.rest.NotFoundException;
+import com.springboot.covid19.exception.NotFoundException;
 
 @Service
 public class VaccineServiceImpl implements VaccineService {
 
 	@Autowired
 	private VaccineRepository vaccineRepository;
+
+//	public VaccineServiceImpl(VaccineRepository vaccineRepository) {
+//		this.vaccineRepository = vaccineRepository;
+//	}
 		
 	@Override
 	public List<Vaccine> findAll() {

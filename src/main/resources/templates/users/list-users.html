@@ -46,6 +46,7 @@
 				<th rowspan=2 class="align-middle">Address</th>
 				<th rowspan=2 class="align-middle">Email</th>
 				<th rowspan=2 class="align-middle">Phone</th>
+				<th rowspan=2 class="align-middle">Profession</th>
 				<th rowspan=2 class="align-middle">Priority</th>
 				<th rowspan=2 class="align-middle">Vaccine</th>
 				<th colspan=2 class="text-center">Registration</th>
@@ -67,7 +68,8 @@
 				<td th:text="${user.cnp}" />	
 				<td th:text="${user.address}" />	
 				<td th:text="${user.email}" />	
-				<td th:text="${user.phone}" />	
+				<td th:text="${user.phone}" />
+				<td th:text="${user.profession}" />
 				<td th:text="${user.priority}" align="center" />	
 				<td th:text="${user.vaccine.manufacturer}" />	
 				<td th:text="${#temporals.format(user.registration, 'dd-MMM-yyyy')}" />	

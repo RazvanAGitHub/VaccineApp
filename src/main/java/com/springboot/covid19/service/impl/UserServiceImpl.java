@@ -1,22 +1,27 @@
-package com.springboot.covid19.service;
+package com.springboot.covid19.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.springboot.covid19.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.springboot.covid19.dto.UserRepository;
+import com.springboot.covid19.repository.UserRepository;
 import com.springboot.covid19.entity.User;
-import com.springboot.covid19.rest.NotFoundException;
+import com.springboot.covid19.exception.NotFoundException;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+//	public UserServiceImpl(UserRepository userRepository) {
+//		this.userRepository = userRepository;
+//	}
 		
 	@Override
 	public List<User> findAll() {

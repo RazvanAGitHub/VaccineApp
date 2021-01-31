@@ -5,20 +5,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.springboot.covid19.service.UserService;
+import com.springboot.covid19.service.VaccineService;
+import com.springboot.covid19.service.impl.UserServiceImpl;
+import com.springboot.covid19.service.impl.VaccineServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.springboot.covid19.entity.User;
 import com.springboot.covid19.entity.Vaccine;
-import com.springboot.covid19.service.UserService;
-import com.springboot.covid19.service.VaccineService;
 
 @Controller
 @RequestMapping("/users")
@@ -36,7 +34,15 @@ public class UserController {
 	private int appointmentStart;
 	
 	private LocalDateTime userRegistration;
-	
+
+//	public UserController(UserServiceImpl userService, VaccineServiceImpl vaccineService) {
+//		this.userService = userService;
+//		this.vaccineService = vaccineService;
+//	}
+
+//	public UserController(VaccineServiceImpl vaccineService) {
+//		this.vaccineService = vaccineService;
+//	}
 	// add mapping for "/list"
 
 	@GetMapping("/list")
@@ -48,7 +54,7 @@ public class UserController {
 		// add to the spring model
 		theModel.addAttribute("users", theUsers);
 		
-		return "users/list-users";
+		return "users/list-users"; //theUsers;
 	}
 	
 	@GetMapping("/showFormForAdd")
@@ -121,12 +127,12 @@ public class UserController {
 		int capacity = hospitalVaccinationCapacity > 0 ? hospitalVaccinationCapacity : 1;
 		
 		for(User user: users) {
-			int plusDays = appointmentStart;
-			
-			
-			plusDays += index++ / capacity;  
-					
-			userService.setAppointment(user.getId(), LocalDate.now().plusDays(plusDays));
+			if (user.getAppointment() == null) {
+				int plusDays = appointmentStart;
+				plusDays += index++ / capacity;
+				userService.setAppointment(user.getId(), LocalDate.now().plusDays(plusDays));
+			}
+
 		}
 		
 		return "redirect:/users/list";
