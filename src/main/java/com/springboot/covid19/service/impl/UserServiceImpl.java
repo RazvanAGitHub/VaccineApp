@@ -46,6 +46,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void save(User theUser) {
+		if (ageOfTheUser(theUser) >= 65 && !theUser.getProfession().equals("Doctor")) {
+			theUser.setPriority(2);
+		} else {
+			switch (theUser.getProfession()) {
+				case "Doctor":
+					theUser.setPriority(1);
+					break;
+				case "Teacher":
+					theUser.setPriority(2);
+					break;
+				case "Other":
+					theUser.setPriority(3);
+					break;
+			}
+		}
+
 		userRepository.save(theUser);
 	}
 
@@ -68,6 +84,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean existsById(int id) {
 		return userRepository.existsById(id);
+	}
+
+	private int ageOfTheUser(User theUser) {
+		int age;
+		int determineTheCentury = Integer.parseInt(theUser.getCnp().substring(0,1));
+		int yearOfBirth = 0;
+
+		if (determineTheCentury <= 2) {
+			yearOfBirth = 1900 + Integer.parseInt(theUser.getCnp().substring(1,3));
+		} else if (determineTheCentury >= 5) {
+			yearOfBirth = 2000 + Integer.parseInt(theUser.getCnp().substring(1,3));
+		}
+		LocalDate currentDate = LocalDate.now();
+		int year = currentDate.getYear();
+
+		age = year - yearOfBirth;
+		return age;
 	}
 }
 
