@@ -32,6 +32,21 @@
 		<li><a th:href="@{/users/showFormForAdd}">Add Appointment</a></li>
 		<li><a th:href="@{/vaccines/list}">Vaccine List</a></li>
 		<li><a th:href="@{/vaccines/showFormForAdd}">Add Vaccine</a></li>
+		<li><a th:href="@{/users/list-by-priority}">Users by Priority</a></li>
+			<form action="#" th:action="@{/users/list-by-priority}"
+				  th:object="${user}" method="GET">
+
+
+				<select th:field="*{priority}"
+						class="form-control mb-4 col-4" >
+					<option th:value="1" th:text="priority 1"></option>
+					<option th:value="2" th:text="priority 2"></option>
+					<option th:value="3" th:text="priority 3"></option>
+				</select>
+
+
+			</form>
+
 	</ul>
 </div>
 	

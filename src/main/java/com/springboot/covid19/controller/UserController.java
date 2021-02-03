@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.springboot.covid19.dto.UserViewDto;
 import com.springboot.covid19.service.UserService;
 import com.springboot.covid19.service.VaccineService;
 import com.springboot.covid19.service.impl.UserServiceImpl;
@@ -56,7 +57,21 @@ public class UserController {
 		
 		return "users/list-users"; //theUsers;
 	}
-	
+
+	@GetMapping("/list-by-priority")
+	public String listUsersByPriority(@RequestParam("priority") int priority, Model theModel) {
+
+		// get Users from db
+		List<UserViewDto> theUsers = userService.findAllByPriority(priority);
+
+		// add to the spring model
+		theModel.addAttribute("users", theUsers);
+
+		return "users/list-users-by-priority"; //theUsers;
+
+	}
+
+
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model theModel) {
 		

@@ -1,9 +1,11 @@
 package com.springboot.covid19.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.springboot.covid19.dto.UserViewDto;
 import com.springboot.covid19.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -42,6 +44,25 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return theUser;
+	}
+
+	@Override
+	public List<UserViewDto> findAllByPriority(int priority) {
+
+		List<UserViewDto> usersList = new ArrayList<>();
+
+		// user -> userViewDto (modelMapper -> TODO look it up in the MVN repository, it can be a BEAN)
+		// it maps all of the fields from one blueprint to another matching by field name.
+		userRepository.findAll()
+				// User -> UserViewDto -> add to a LIST
+				.forEach(user -> {
+					if (user.getPriority() == priority) {
+						usersList.add(new UserViewDto(user.getName(), user.getProfession(), user.getCnp(), user.getPriority()));
+					}
+
+				});
+
+		return usersList;
 	}
 
 	@Override
