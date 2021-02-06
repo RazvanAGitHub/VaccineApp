@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 // User -> UserViewDto -> add to a LIST
                 .forEach(user -> {
                     if (user.getPriority() == priority) {
-                        usersList.add(new UserViewDto(user.getName(), user.getProfession(), user.getCnp(), user.getPriority()));
+                        usersList.add(new UserViewDto(user.getName(), user.getCnp(), user.getProfession(), user.getPriority()));
                     }
 
                 });

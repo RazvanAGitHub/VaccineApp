@@ -46,12 +46,14 @@ public class UserController {
         return "users/list-users"; //theUsers;
     }
 
-    @GetMapping(value = "/list-by-priority", params = {"priority"})
+    @GetMapping(value = "/list-by-priority")
+   // @RequestMapping(value = "/users/{priority}", method = RequestMethod.POST)
+    public String singlePathVariable( Model theModel)
     //@PathVariable
-    public String listUsersByPriority(@RequestParam("priority") int priority, Model theModel) {
+     {
 
         // get Users from db
-        List<UserViewDto> theUsers = userService.findAllByPriority(priority);
+        List<UserViewDto> theUsers = userService.findAllByPriority(1);
 
         // add to the spring model
         theModel.addAttribute("users", theUsers);
