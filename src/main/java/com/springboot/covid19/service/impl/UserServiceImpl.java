@@ -45,10 +45,7 @@ public class UserServiceImpl implements UserService {
 
         List<UserViewDto> usersList = new ArrayList<>();
 
-        // user -> userViewDto (modelMapper -> TODO look it up in the MVN repository, it can be a BEAN)
-        // it maps all of the fields from one blueprint to another matching by field name.
-        userRepository.findAll()
-                // User -> UserViewDto -> add to a LIST
+        userRepository.findAll(Sort.by("name"))
                 .forEach(user -> {
                     if (user.getPriority() == priority) {
                         usersList.add(new UserViewDto(user.getName(), user.getCnp(), user.getProfession(), user.getPriority()));
@@ -61,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User theUser) {
-        //System.out.println("************** " + theUser.getName() + " " + theUser.getAppointment() + ", priority is " + theUser.getPriority() + " _ " + theUser.getCnp() +" _ " + theUser.getProfession());
+
         if (ageOfTheUser(theUser) >= 65 && !theUser.getProfession().equals("Doctor")) {
             theUser.setPriority(2);
         } else {
@@ -96,14 +93,14 @@ public class UserServiceImpl implements UserService {
     public List<UserViewDto> findUsersWithAgeOver65() {
         List<UserViewDto> usersList = new ArrayList<>();
 
-        userRepository.findAll()
-
+        userRepository.findAll(Sort.by("name", "priority"))
                 .forEach(user -> {
                     if (ageOfTheUser(user) >= 65) {
                         usersList.add(new UserViewDto(user.getName(), user.getCnp(), user.getProfession(), user.getPriority()));
                     }
 
                 });
+
         return usersList;
 
     }
@@ -113,18 +110,31 @@ public class UserServiceImpl implements UserService {
         List<UserViewDtoShort> usersList = new ArrayList<>();
         LocalDate today = LocalDate.now();
 
-        userRepository.findAll()
+        userRepository.findAll(Sort.by("appointment", "name"))
                 .forEach(user -> {
                     if (user.getAppointment().isAfter(today)) {
                         usersList.add(new UserViewDtoShort(user.getName(), user.getAppointment()));
                     }
 
                 });
-        //Collections.sort(usersList, Comparator.comparing(UserViewDtoShort::getName()));
 
-        Comparator<UserViewDtoShort> comparator
-                = (h1, h2) -> h1.getAppointment().compareTo(h2.getAppointment());
-        usersList.sort(comparator);
+        return usersList;
+
+    }
+
+    @Override
+    public List<UserViewDtoShort> findUsersThatWereVaccinated() {
+        List<UserViewDtoShort> usersList = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+
+        userRepository.findAll(Sort.by("appointment", "name"))
+                .forEach(user -> {
+                    if (user.getAppointment().isBefore(today)) {
+                        usersList.add(new UserViewDtoShort(user.getName(), user.getAppointment()));
+                    }
+
+                });
+
         return usersList;
 
     }

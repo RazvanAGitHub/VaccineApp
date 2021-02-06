@@ -10,14 +10,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-	<title>Users by Priority</title>
+	<title>Users that were vaccinated</title>
 </head>
 
 <body>
 
 <div class="container-fluid mt-3 mb-5">
 
-	<h3>Users by Priority</h3>
+	<h3>Users that were vaccinated</h3>
 	
 	<div sec:authorize="isAuthenticated()">
  		User: <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
@@ -35,9 +35,7 @@
 		<thead class="thead-dark">
 			<tr>
 				<th rowspan=2 class="align-middle">Name</th>
-				<th rowspan=2 class="align-middle">CNP</th>
-				<th rowspan=2 class="align-middle">Profession</th>
-				<th rowspan=2 class="align-middle">Priority</th>
+				<th rowspan=2 class="align-middle">Appointment</th>
 			</tr>
 		</thead>
 		
@@ -45,9 +43,7 @@
 			<tr th:each="user : ${users}">
 			
 				<td th:text="${user.name}" />	
-				<td th:text="${user.cnp}" />	
-				<td th:text="${user.profession}" />
-				<td th:text="${user.priority}" align="center" />	
+				<td th:text="${user.appointment}" />
 			</tr>
 		</tbody>		
 	</table>

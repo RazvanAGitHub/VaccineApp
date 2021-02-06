@@ -43,23 +43,19 @@ public class UserController {
         // add to the spring model
         theModel.addAttribute("users", theUsers);
 
-        return "users/list-users"; //theUsers;
+        return "users/list-users";
     }
 
-    @GetMapping(value = "/list-by-priority")
-   // @RequestMapping(value = "/users/{priority}", method = RequestMethod.POST)
-    public String singlePathVariable( Model theModel)
-    //@PathVariable
-     {
+    @GetMapping(value = "/list-by-priority/single/{priority}")
+    public String listUsersByPriority(@PathVariable("priority") int priority, Model theModel) {
 
         // get Users from db
-        List<UserViewDto> theUsers = userService.findAllByPriority(1);
+        List<UserViewDto> theUsers = userService.findAllByPriority(priority);
 
         // add to the spring model
         theModel.addAttribute("users", theUsers);
 
         return "users/list-users-by-priority";
-
     }
 
     @GetMapping(value = "/list-age-over-65")
@@ -77,7 +73,6 @@ public class UserController {
     }
 
     @GetMapping(value = "/list-users-that-will-be-vaccinated")
-    //@PathVariable
     public String listUsersThatWillBeVaccinated(Model theModel) {
 
         // get Users from db
@@ -87,7 +82,18 @@ public class UserController {
         theModel.addAttribute("users", theUsers);
 
         return "users/list-users-that-will-be-vaccinated";
+    }
 
+    @GetMapping(value = "/list-users-that-were-vaccinated")
+    public String listUsersThatWereVaccinated(Model theModel) {
+
+        // get Users from db
+        List<UserViewDtoShort> theUsers = userService.findUsersThatWereVaccinated();
+
+        // add to the spring model
+        theModel.addAttribute("users", theUsers);
+
+        return "users/list-users-that-were-vaccinated";
     }
 
 

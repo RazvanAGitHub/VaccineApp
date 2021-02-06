@@ -17,6 +17,8 @@ public interface UserService {
 
     List<UserViewDtoShort> findUsersThatWillBeVaccinated();
 
+    List<UserViewDtoShort> findUsersThatWereVaccinated();
+
     public User findById(int theId);
 
     public void save(User theUser);
