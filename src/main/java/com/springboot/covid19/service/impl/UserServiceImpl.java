@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import com.springboot.covid19.dto.UserViewDto;
+import com.springboot.covid19.dto.UserViewDtoShort;
 import com.springboot.covid19.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -89,6 +90,43 @@ public class UserServiceImpl implements UserService {
     public List<User> findUsersByPriorityAndRegistration() {
         List<User> users = userRepository.findAll(Sort.by("priority", "registration"));
         return users;
+    }
+
+    @Override
+    public List<UserViewDto> findUsersWithAgeOver65() {
+        List<UserViewDto> usersList = new ArrayList<>();
+
+        userRepository.findAll()
+
+                .forEach(user -> {
+                    if (ageOfTheUser(user) >= 65) {
+                        usersList.add(new UserViewDto(user.getName(), user.getCnp(), user.getProfession(), user.getPriority()));
+                    }
+
+                });
+        return usersList;
+
+    }
+
+    @Override
+    public List<UserViewDtoShort> findUsersThatWillBeVaccinated() {
+        List<UserViewDtoShort> usersList = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+
+        userRepository.findAll()
+                .forEach(user -> {
+                    if (user.getAppointment().isAfter(today)) {
+                        usersList.add(new UserViewDtoShort(user.getName(), user.getAppointment()));
+                    }
+
+                });
+        //Collections.sort(usersList, Comparator.comparing(UserViewDtoShort::getName()));
+
+        Comparator<UserViewDtoShort> comparator
+                = (h1, h2) -> h1.getAppointment().compareTo(h2.getAppointment());
+        usersList.sort(comparator);
+        return usersList;
+
     }
 
     @Override

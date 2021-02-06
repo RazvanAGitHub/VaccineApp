@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.springboot.covid19.dto.UserViewDto;
+import com.springboot.covid19.dto.UserViewDtoShort;
 import com.springboot.covid19.entity.User;
 
 public interface UserService {
@@ -11,6 +12,10 @@ public interface UserService {
     public List<User> findAll();
 
     List<UserViewDto> findAllByPriority(int priority);
+
+    List<UserViewDto> findUsersWithAgeOver65();
+
+    List<UserViewDtoShort> findUsersThatWillBeVaccinated();
 
     public User findById(int theId);
 

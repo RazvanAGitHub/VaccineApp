@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.springboot.covid19.dto.UserViewDto;
+import com.springboot.covid19.dto.UserViewDtoShort;
 import com.springboot.covid19.service.UserService;
 import com.springboot.covid19.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,35 @@ public class UserController {
         // add to the spring model
         theModel.addAttribute("users", theUsers);
 
-        return "users/list-users-by-priority"; //theUsers;
+        return "users/list-users-by-priority";
+
+    }
+
+    @GetMapping(value = "/list-age-over-65")
+    //@PathVariable
+    public String listUsersWithAgeGreaterThan65(Model theModel) {
+
+        // get Users from db
+        List<UserViewDto> theUsers = userService.findUsersWithAgeOver65();
+
+        // add to the spring model
+        theModel.addAttribute("users", theUsers);
+
+        return "users/list-users-age-over-65";
+
+    }
+
+    @GetMapping(value = "/list-users-that-will-be-vaccinated")
+    //@PathVariable
+    public String listUsersThatWillBeVaccinated(Model theModel) {
+
+        // get Users from db
+        List<UserViewDtoShort> theUsers = userService.findUsersThatWillBeVaccinated();
+
+        // add to the spring model
+        theModel.addAttribute("users", theUsers);
+
+        return "users/list-users-that-will-be-vaccinated";
 
     }
 
