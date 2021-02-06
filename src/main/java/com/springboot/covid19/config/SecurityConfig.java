@@ -14,47 +14,48 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// add a reference to our security data source
-	
-	@Autowired
-	@Qualifier("securityDataSource")
-	private DataSource securityDataSource;
-		
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    // add a reference to our security data source
 
-		// use jdbc authentication
-		auth.jdbcAuthentication().dataSource(securityDataSource);
-		
-	}
+    @Autowired
+    @Qualifier("securityDataSource")
+    private DataSource securityDataSource;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		http.authorizeRequests()
-			.antMatchers("/users/showFormForAdd").permitAll()
-			.antMatchers("/users/save").permitAll()
-			.antMatchers("/users/appointmentAdded").permitAll()
-			.antMatchers("/users/showFormForUpdate").hasRole("ADMIN")
-			.antMatchers("/users/list").hasRole("ADMIN")
-			.antMatchers("/users/delete").hasRole("ADMIN")
-			.antMatchers("/users/setAppointmentDate").hasRole("ADMIN")
-			.antMatchers("/users/clearAppointmentDate").hasRole("ADMIN")
-			.antMatchers("/showStaffPage").hasRole("ADMIN")
-			.antMatchers("/vaccines/**").hasRole("ADMIN")
-			.antMatchers("/resources/**").permitAll()
-			.and()
-			.formLogin()
-				.loginPage("/showMyLoginPage")
-				.loginProcessingUrl("/authenticateTheUser")
-				.defaultSuccessUrl("/showStaffPage", true)
-				.permitAll()
-			.and()
-			.logout().permitAll()
-			.and()
-			.exceptionHandling().accessDeniedPage("/access-denied");
-	}
-		
+        // use jdbc authentication
+        auth.jdbcAuthentication().dataSource(securityDataSource);
+
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http.authorizeRequests()
+                .antMatchers("/users/showFormForAdd").permitAll()
+                .antMatchers("/users/save").permitAll()
+                .antMatchers("/users/appointmentAdded").permitAll()
+                .antMatchers("/users/showFormForUpdate").hasRole("ADMIN")
+                .antMatchers("/users/list").hasRole("ADMIN")
+                .antMatchers("/list-by-priority").hasRole("ADMIN")
+                .antMatchers("/users/delete").hasRole("ADMIN")
+                .antMatchers("/users/setAppointmentDate").hasRole("ADMIN")
+                .antMatchers("/users/clearAppointmentDate").hasRole("ADMIN")
+                .antMatchers("/showStaffPage").hasRole("ADMIN")
+                .antMatchers("/vaccines/**").hasRole("ADMIN")
+                .antMatchers("/resources/**").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/showMyLoginPage")
+                .loginProcessingUrl("/authenticateTheUser")
+                .defaultSuccessUrl("/showStaffPage", true)
+                .permitAll()
+                .and()
+                .logout().permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied");
+    }
+
 }
 
 

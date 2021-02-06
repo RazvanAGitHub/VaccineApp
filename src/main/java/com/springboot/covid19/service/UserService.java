@@ -8,19 +8,26 @@ import com.springboot.covid19.entity.User;
 
 public interface UserService {
 
-	public List<User> findAll();
+    public List<User> findAll();
 
-	List<UserViewDto> findAllByPriority(int priority);
-	
-	public User findById(int theId);
-	
-	public void save(User theUser);
-	
-	public void deleteById(int theId);
-	
-	public List<User> findUsersByPriorityAndRegistration();
-	
-	public void setAppointment(int id, LocalDate dt);
-	
-	public boolean existsById(int id);
+    List<UserViewDto> findAllByPriority(int priority);
+
+    public User findById(int theId);
+
+    public void save(User theUser);
+
+    public void deleteById(int theId);
+
+    public List<User> findUsersByPriorityAndRegistration();
+
+    public void setAppointment(int id, LocalDate dt);
+
+    void setAppointmentDateForAUser(User user, int capacity);
+
+    int countCapacityForADate(LocalDate appointment, int priority);
+
+    LocalDate getLastDateForAppointment(int priority);
+
+    public boolean existsById(int id);
+
 }

@@ -33,8 +33,8 @@
     </div>
     <hr>
 
-    <p class="h4 mb-3">Add Appointment</p>
-    <p><small class="text-muted">For vaccination appointments please fill out this form.</small></p>
+    <p class="h4 mb-3">Update Contact Information</p>
+    <p><small class="text-muted">For changing the contact information of a user please fill out this form.</small></p>
 
     <form action="#" th:action="@{/users/save}"
           th:object="${user}" method="POST">
@@ -42,10 +42,10 @@
         <!-- Add hidden form field to handle update -->
         <input type="hidden" th:field="*{id}"/>
 
-        <input type="text" th:field="*{name}"
+        <input type="hidden" th:field="*{name}"
                class="form-control mb-4 col-4" placeholder="Name">
 
-        <input type="text" th:field="*{cnp}"
+        <input type="hidden" th:field="*{cnp}"
                class="form-control mb-4 col-4" placeholder="CNP">
 
         <input type="text" th:field="*{address}"
@@ -57,14 +57,15 @@
         <input type="text" th:field="*{phone}"
                class="form-control mb-4 col-4" placeholder="Phone">
 
-        <select th:field="*{profession}"
+        <select th:field="*{profession}" hidden
                 class="form-control mb-4 col-4">
             <option th:value="Doctor" th:text="Doctor"></option>
             <option th:value="Teacher" th:text="Teacher"></option>
             <option th:value="Other" th:text="Other"></option>
         </select>
 
-        <select th:field="*{vaccine.id}" class="form-control mb-4 col-4">
+        <select th:field="*{vaccine.id}" hidden
+                class="form-control mb-4 col-4">
             <option th:each="v : ${vaccines}"
                     th:value="${v.id}"
                     th:text="|${v.manufacturer} - ${v.inStock - v.users.size()} available|"
@@ -78,6 +79,7 @@
                class="form-control mb-4 col-4" placeholder="Priority">
 
         <button type="submit" class="btn btn-info col-2">Save</button>
+
     </form>
 
 </div>

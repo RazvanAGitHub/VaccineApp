@@ -14,73 +14,69 @@ import com.springboot.covid19.service.VaccineService;
 @RequestMapping("/vaccines")
 public class VaccineController {
 
-	@Autowired
-	private VaccineService vaccineService;
+    @Autowired
+    private VaccineService vaccineService;
 
-//	public VaccineController(VaccineServiceImpl vaccineService) {
-//		this.vaccineService = vaccineService;
-//	}
-	
-	// add mapping for "/list"
+    // add mapping for "/list"
 
-	@GetMapping("/list")
-	public String listVaccines(Model theModel) {
-		
-		// get Vaccines from db
-		List<Vaccine> theVaccines = vaccineService.findAll();
-		
-		// add to the spring model
-		theModel.addAttribute("vaccines", theVaccines);
-		
-		return "vaccines/list-vaccines";
-	}
-	
-	@GetMapping("/showFormForAdd")
-	public String showFormForAdd(Model theModel) {
-		
-		// create model attribute to bind form data
-		Vaccine theVaccine = new Vaccine();
-		
-		theModel.addAttribute("vaccine", theVaccine);
-		
-		return "vaccines/vaccine-form";
-	}
+    @GetMapping("/list")
+    public String listVaccines(Model theModel) {
 
-	@GetMapping("/showFormForUpdate")
-	public String showFormForUpdate(@RequestParam("vaccineId") int theId,
-									Model theModel) {
-		
-		// get the Vaccine from the service
-		Vaccine theVaccine= vaccineService.findById(theId);
-		
-		// set Vaccine as a model attribute to pre-populate the form
-		theModel.addAttribute("vaccine", theVaccine);
-		
-		// send over to our form
-		return "vaccines/vaccine-form";			
-	}
-	
-	
-	@PostMapping("/save")
-	public String saveVaccine(@ModelAttribute("vaccine") Vaccine theVaccine) {
-		
-		// save the Vaccine
-		vaccineService.save(theVaccine);
-		
-		// use a redirect to prevent duplicate submissions
-		return "redirect:/vaccines/list";
-	}
-	
-	
-	@GetMapping("/delete")
-	public String delete(@RequestParam("vaccineId") int theId) {
-		
-		// delete the Vaccine
-		vaccineService.deleteById(theId);
-		
-		// redirect to /Vaccines/list
-		return "redirect:/vaccines/list";
-	}
+        // get Vaccines from db
+        List<Vaccine> theVaccines = vaccineService.findAll();
+
+        // add to the spring model
+        theModel.addAttribute("vaccines", theVaccines);
+
+        return "vaccines/list-vaccines";
+    }
+
+    @GetMapping("/showFormForAdd")
+    public String showFormForAdd(Model theModel) {
+
+        // create model attribute to bind form data
+        Vaccine theVaccine = new Vaccine();
+
+        theModel.addAttribute("vaccine", theVaccine);
+
+        return "vaccines/vaccine-form";
+    }
+
+    @GetMapping("/showFormForUpdate")
+    public String showFormForUpdate(@RequestParam("vaccineId") int theId,
+                                    Model theModel) {
+
+        // get the Vaccine from the service
+        Vaccine theVaccine = vaccineService.findById(theId);
+
+        // set Vaccine as a model attribute to pre-populate the form
+        theModel.addAttribute("vaccine", theVaccine);
+
+        // send over to our form
+        return "vaccines/vaccine-form";
+    }
+
+
+    @PostMapping("/save")
+    public String saveVaccine(@ModelAttribute("vaccine") Vaccine theVaccine) {
+
+        // save the Vaccine
+        vaccineService.save(theVaccine);
+
+        // use a redirect to prevent duplicate submissions
+        return "redirect:/vaccines/list";
+    }
+
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("vaccineId") int theId) {
+
+        // delete the Vaccine
+        vaccineService.deleteById(theId);
+
+        // redirect to /Vaccines/list
+        return "redirect:/vaccines/list";
+    }
 }
 
 

@@ -14,48 +14,43 @@ import com.springboot.covid19.exception.NotFoundException;
 @Service
 public class VaccineServiceImpl implements VaccineService {
 
-	@Autowired
-	private VaccineRepository vaccineRepository;
+    @Autowired
+    private VaccineRepository vaccineRepository;
 
-//	public VaccineServiceImpl(VaccineRepository vaccineRepository) {
-//		this.vaccineRepository = vaccineRepository;
-//	}
-		
-	@Override
-	public List<Vaccine> findAll() {
-		return vaccineRepository.findAll();
-	}
+    @Override
+    public List<Vaccine> findAll() {
+        return vaccineRepository.findAll();
+    }
 
-	@Override
-	public Vaccine findById(int id) {
-		Optional<Vaccine> result = vaccineRepository.findById(id);
-		
-		Vaccine theVaccine = null;
-		
-		if (result.isPresent()) {
-			theVaccine= result.get();
-		}
-		else {
-			throw new NotFoundException("Vaccine with id: " + id  + " not found.");
-		}
-		
-		return theVaccine;
-	}
+    @Override
+    public Vaccine findById(int id) {
+        Optional<Vaccine> result = vaccineRepository.findById(id);
 
-	@Override
-	public void save(Vaccine theVaccine) {
-		vaccineRepository.save(theVaccine);
-	}
+        Vaccine theVaccine = null;
 
-	@Override
-	public void deleteById(int theId) {
-		vaccineRepository.deleteById(theId);
-	}
+        if (result.isPresent()) {
+            theVaccine = result.get();
+        } else {
+            throw new NotFoundException("Vaccine with id: " + id + " not found.");
+        }
 
-	@Override
-	public boolean existsById(int id) {
-		return vaccineRepository.existsById(id);
-	}
+        return theVaccine;
+    }
+
+    @Override
+    public void save(Vaccine theVaccine) {
+        vaccineRepository.save(theVaccine);
+    }
+
+    @Override
+    public void deleteById(int theId) {
+        vaccineRepository.deleteById(theId);
+    }
+
+    @Override
+    public boolean existsById(int id) {
+        return vaccineRepository.existsById(id);
+    }
 }
 
 

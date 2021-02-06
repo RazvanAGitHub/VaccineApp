@@ -1,15 +1,12 @@
 package com.springboot.covid19.controller;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.springboot.covid19.dto.UserViewDto;
 import com.springboot.covid19.service.UserService;
 import com.springboot.covid19.service.VaccineService;
-import com.springboot.covid19.service.impl.UserServiceImpl;
-import com.springboot.covid19.service.impl.VaccineServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,146 +20,136 @@ import com.springboot.covid19.entity.Vaccine;
 @RequestMapping("/users")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private VaccineService vaccineService;
-	
-	@Value("${hospital.day.vaccination.capacity}")
-	private int hospitalVaccinationCapacity;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private VaccineService vaccineService;
 
-	@Value("${appointment.start.fromtoday.days}")
-	private int appointmentStart;
-	
-	private LocalDateTime userRegistration;
+    @Value("${hospital.day.vaccination.capacity}")
+    private int hospitalVaccinationCapacity;
 
-//	public UserController(UserServiceImpl userService, VaccineServiceImpl vaccineService) {
-//		this.userService = userService;
-//		this.vaccineService = vaccineService;
-//	}
+//	@Value("${appointment.start.fromtoday.days}")
+//	private int appointmentStart;
 
-//	public UserController(VaccineServiceImpl vaccineService) {
-//		this.vaccineService = vaccineService;
-//	}
-	// add mapping for "/list"
+    private LocalDateTime userRegistration;
 
-	@GetMapping("/list")
-	public String listUsers(Model theModel) {
-		
-		// get Users from db
-		List<User> theUsers = userService.findUsersByPriorityAndRegistration();
-		
-		// add to the spring model
-		theModel.addAttribute("users", theUsers);
-		
-		return "users/list-users"; //theUsers;
-	}
+    @GetMapping("/list")
+    public String listUsers(Model theModel) {
 
-	@GetMapping("/list-by-priority")
-	public String listUsersByPriority(@RequestParam("priority") int priority, Model theModel) {
+        // get Users from db
+        List<User> theUsers = userService.findUsersByPriorityAndRegistration();
 
-		// get Users from db
-		List<UserViewDto> theUsers = userService.findAllByPriority(priority);
+        // add to the spring model
+        theModel.addAttribute("users", theUsers);
 
-		// add to the spring model
-		theModel.addAttribute("users", theUsers);
+        return "users/list-users"; //theUsers;
+    }
 
-		return "users/list-users-by-priority"; //theUsers;
+    @GetMapping(value = "/list-by-priority", params = {"priority"})
+    //@PathVariable
+    public String listUsersByPriority(@RequestParam("priority") int priority, Model theModel) {
 
-	}
+        // get Users from db
+        List<UserViewDto> theUsers = userService.findAllByPriority(priority);
+
+        // add to the spring model
+        theModel.addAttribute("users", theUsers);
+
+        return "users/list-users-by-priority"; //theUsers;
+
+    }
 
 
-	@GetMapping("/showFormForAdd")
-	public String showFormForAdd(Model theModel) {
-		
-		// create model attribute to bind form data
-		User theUser = new User();
-		List<Vaccine> vaccines = vaccineService.findAll();
-		
-		theModel.addAttribute("user", theUser);
-		theModel.addAttribute("vaccines", vaccines);
-		
-		return "users/user-form";
-	}
+    @GetMapping("/showFormForAdd")
+    public String showFormForAdd(Model theModel) {
 
-	@GetMapping("/showFormForUpdate")
-	public String showFormForUpdate(@RequestParam("userId") int theId,
-									Model theModel) {
-		
-		// get the User from the service
-		User user = userService.findById(theId);
-		userRegistration = user.getRegistration();
-		
-		List<Vaccine> vaccines = vaccineService.findAll();
+        // create model attribute to bind form data
+        User theUser = new User();
+        List<Vaccine> vaccines = vaccineService.findAll();
 
-		// set User as a model attribute to pre-populate the form
-		theModel.addAttribute("user", user);
-		theModel.addAttribute("vaccines", vaccines);
-		
-		// send over to our form
-		return "users/user-form";			
-	}
-		
-	@PostMapping("/save")
-	public String saveUser(@ModelAttribute("user") User user) {
-		String redirect = "redirect:/users/appointment-added";
-		
-		// save the user
-		if(user.getId() == 0) user.setRegistration(LocalDateTime.now());
-		else {
-			user.setRegistration(userRegistration);
-			redirect = "redirect:/users/list";
-		}
-		
-		userService.save(user);
-		
-		// use a redirect to prevent duplicate submissions
-		return redirect;
-	}
-	
-	@GetMapping("/appointment-added")
-	public String showAppointmentAdded() {
-		return "users/appointment-added";
-	}
-	
-	@GetMapping("/delete")
-	public String delete(@RequestParam("userId") int theId) {
-		
-		// delete the User
-		userService.deleteById(theId);
-		
-		// redirect to /Users/list
-		return "redirect:/users/list";
-	}
-	
-	@GetMapping("/setAppointmentDate")
-	public String setAppointmentDate() {
-		List<User> users = userService.findUsersByPriorityAndRegistration();
-		int index = 0;
-		int capacity = hospitalVaccinationCapacity > 0 ? hospitalVaccinationCapacity : 1;
-		
-		for(User user: users) {
-			if (user.getAppointment() == null) {
-				int plusDays = appointmentStart;
-				plusDays += index++ / capacity;
-				userService.setAppointment(user.getId(), LocalDate.now().plusDays(plusDays));
-			}
+        theModel.addAttribute("user", theUser);
+        theModel.addAttribute("vaccines", vaccines);
 
-		}
-		
-		return "redirect:/users/list";
-	}
-	
-	@GetMapping("/clearAppointmentDate")
-	public String clearAppointmentDate() {
-		List<User> users = userService.findUsersByPriorityAndRegistration();
-		
-		for(User user: users) {
-			userService.setAppointment(user.getId(), null);
-		}
-		
-		return "redirect:/users/list";
-	}
+        return "users/user-form";
+    }
+
+    @GetMapping("/showFormForUpdate")
+    public String showFormForUpdate(@RequestParam("userId") int theId,
+                                    Model theModel) {
+
+        // get the User from the service
+        User user = userService.findById(theId);
+        userRegistration = user.getRegistration();
+
+        List<Vaccine> vaccines = vaccineService.findAll();
+
+        // set User as a model attribute to pre-populate the form
+        theModel.addAttribute("user", user);
+        theModel.addAttribute("vaccines", vaccines);
+
+        // send over to our form
+        return "users/user-form-update";
+    }
+
+    @PostMapping("/save")
+    public String saveUser(@ModelAttribute("user") User user) {
+        String redirect = "redirect:/users/appointment-added";
+
+        // save the user
+        if (user.getId() == 0) user.setRegistration(LocalDateTime.now());
+        else {
+            user.setRegistration(userRegistration);
+            redirect = "redirect:/users/list";
+        }
+
+        userService.save(user);
+
+        // use a redirect to prevent duplicate submissions
+        return redirect;
+    }
+
+    @GetMapping("/appointment-added")
+    public String showAppointmentAdded() {
+        return "users/appointment-added";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("userId") int theId) {
+
+        // delete the User
+        userService.deleteById(theId);
+
+        // redirect to /Users/list
+        return "redirect:/users/list";
+    }
+
+    @GetMapping("/setAppointmentDate")
+    public String setAppointmentDate() {
+
+        List<User> users = userService.findUsersByPriorityAndRegistration();
+        int capacity = hospitalVaccinationCapacity > 0 ? hospitalVaccinationCapacity : 1;
+
+        for (User user : users) {
+            if (user.getAppointment() == null) {
+                userService.setAppointmentDateForAUser(user, capacity);
+            }
+        }
+
+        return "redirect:/users/list";
+    }
+
+    @GetMapping("/clearAppointmentDate")
+    public String clearAppointmentDate() {
+        List<User> users = userService.findUsersByPriorityAndRegistration();
+
+        for (User user : users) {
+            userService.setAppointment(user.getId(), null);
+        }
+
+        return "redirect:/users/list";
+    }
+
+
 }
 
 
